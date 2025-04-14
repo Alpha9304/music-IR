@@ -5,6 +5,30 @@ import partitura as pt
 key_sig_map = {(0, 0): 0, (0, 1): 1, (1, 0): 2, (1, 1): 3, (-1, 0): 4, (-1, 1): 5, (2, 0): 6, (2, 1): 7, (-2, 0): 8, (-2, 1): 9, (3, 0): 10, (3, 1): 11, (-3, 0): 12, (-3, 1): 13, 
                (4, 0): 14, (4, 1): 15, (-4, 0): 16, (-4, 1): 17, (5, 0): 18, (5, 1): 19, (-5, 0): 20, (-5, 1): 21, (6, 0): 22, (6, 1): 23, (-6, 0): 24, (-6, 1): 25, (7, 0): 26, 
                (7, 1): 27, (-7, 0): 28, (-7, 1): 29}
+
+instrument_categories = {"Piano": ["Acoustic Grand", "Bright Acoustic", "Electric Grand", "Honky-Tonk", "Electric Piano", "Harpsichord", "Clavinet"], 
+                         "Chromatic Percussion": ["Celesta", "Glockenspiel", "Music Box", "Vibraphone", "Marimba", "Xylophone", "Tubular Bells", "Dulcimer"],
+                         "Organ": ["Drawbar Organ", "Percussive Organ", "Rock Organ", "Church Organ", "Reed Organ", "Accoridan", "Harmonica", "Tango Accordian"],
+                         "Guitar": ["Nylon String Guitar", "Steel String Guitar", "Electric Jazz Guitar", "Electric Clean Guitar", "Electric Muted Guitar", 
+                                    "Overdriven Guitar", "Distortion Guitar", "Guitar Harmonics"],
+                         "Bass": ["Acoustic Bass", "Electric Bass", "Fretless Bass", "Slap Bass", "Synth Bass"],
+                         "Solo Strings": ["Violin", "Viola", "Cello", "Contrabass", "Tremolo Strings", "Pizzicato Strings", "Orchestral Strings", "Timpani"],
+                         "Ensemble": ["String Ensemble", "SynthStrings", "Choir Aahs", "Voice Oohs", "Synth Voice", "Orchestra Hit"],
+                         "Brass": ["Trumpet", "Trombone", "Tuba", "Muted Trumpet", "French Horn", "Brass Section", "SynthBrass"],
+                         "Reed": ["Soprano Sax", "Alto Sax", "Tenor Sax", "Baritone Sax", "Oboe", "English Horn", "Bassoon", "Clarinet"],
+                         "Pipe": ["Piccolo", "Flute", "Recorder", "Pan Flute", "Blown Bottle", "Shakuhachi", "Whistle", "Ocarina"],
+                         "Synth Lead": ["Square Wave", "Saw Wave", "Syn. Calliope", "Chiffer Lead", "Charang", "Solo Vox", "5th Saw Wave", "Bass & Lead"],
+                         "Synth Pad": ["Fantasia", "Warm Pad", "Polysynth", "Space Voice", "Bowed Glass", "Metal Pad", "Halo Pad", "Sweep Pad"],
+                         "Synth Effects": ["Ice Rain", "Soundtrack", "Crystal", "Atmosphere", "Brightness", "Goblin", "Echo Drops", "Star Theme"],
+                         "Ethnic": ["Sitar", "Banjo", "Shamisen", "Koto", "Kalimba", "Bagpipe", "Fiddle", "Shanai"], 
+                         "Percussive": ["Tinkle Bell", "Agogo", "Steel Drums", "Woodblock", "Taiko Drum", "Melodic Tom", "Synth Drum", "Reverse Cymbal"],
+                         "Sound effects": ["Guitar Fret Noise", "Breath Noise", "Seashore", "Bird Tweet", "Telephone Ring", "Helicopter", "Applause", "Gunshot"]
+}
+
+
+
+
+
 def read_data(file):
     '''
     Reads the data
@@ -104,8 +128,8 @@ def test_out_library(score): #note in midis some of this data may be missing and
 
     print("Compute Note Array of Part with Some information:") #format is (...default info, note ID, pitch spelling letter, accidental (0 = flat, 1 = sharp?), octave num, ''(if grace nots), key sig num 1 (accidentals), key sig num 2 (mode), time_sig num, time_sig denom, beats)
     #use this, lots of info and better formed than straight time sign estimate...
-    for part in parts:
-        print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
+    #for part in parts:
+    #    print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
 
 def extract_features(score):
     parts = score.parts
@@ -151,7 +175,10 @@ def extract_features(score):
     print(time_sig_counts)
     num_time_signatures = len(time_sig_counts)
     print("num time signatures", num_time_signatures)
-    #get instrument names or maybe just num instruments?
+
+    #get num instruments
+
+    #get instrument category sum
 
     #get dynamics
 
@@ -176,8 +203,8 @@ def extract_features(score):
 def main(): #take this away later so this file can just be run by the system
     input_filename = sys.argv[1]
     input_score = pt.load_score(input_filename) #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
-    #test_out_library(input_score)
-    extract_features(input_score)
+    test_out_library(input_score)
+    #extract_features(input_score)
     #print(parts)
     #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
     #
