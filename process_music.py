@@ -34,7 +34,7 @@ def compute_instrument_cats_code(instrument_list):
             for instr in instrument_categories[key]:
                 if(instr in instrument): #instr in categorized list is most simple (no numberings, tec.)
                     categories.append(key)
-    return hash(categories)
+    return hash(tuple(categories))
 
 
 
@@ -175,7 +175,7 @@ def extract_features(score):
                 time_sig_counts[time_sig_code] = 1
 
         #collect part names
-        parts_list.append(part.name)
+        parts_list.append(part.part_name)
 
     most_frequent_key = max(key_counts, key=key_counts.get)
     print("most frequent key code:", most_frequent_key)
@@ -224,8 +224,8 @@ def extract_features(score):
 def main(): #take this away later so this file can just be run by the system
     input_filename = sys.argv[1]
     input_score = pt.load_score(input_filename) #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
-    test_out_library(input_score)
-    #extract_features(input_score)
+    #test_out_library(input_score)
+    extract_features(input_score)
     #print(parts)
     #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
     #
