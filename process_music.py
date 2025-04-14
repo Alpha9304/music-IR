@@ -1,31 +1,40 @@
 import sys
 import partitura as pt
+import re
 
 #convert (accidentals, mode) to a unique single digit
 key_sig_map = {(0, 0): 0, (0, 1): 1, (1, 0): 2, (1, 1): 3, (-1, 0): 4, (-1, 1): 5, (2, 0): 6, (2, 1): 7, (-2, 0): 8, (-2, 1): 9, (3, 0): 10, (3, 1): 11, (-3, 0): 12, (-3, 1): 13, 
                (4, 0): 14, (4, 1): 15, (-4, 0): 16, (-4, 1): 17, (5, 0): 18, (5, 1): 19, (-5, 0): 20, (-5, 1): 21, (6, 0): 22, (6, 1): 23, (-6, 0): 24, (-6, 1): 25, (7, 0): 26, 
                (7, 1): 27, (-7, 0): 28, (-7, 1): 29}
 
-instrument_categories = {"Piano": ["Acoustic Grand", "Bright Acoustic", "Electric Grand", "Honky-Tonk", "Electric Piano", "Harpsichord", "Clavinet"], 
-                         "Chromatic Percussion": ["Celesta", "Glockenspiel", "Music Box", "Vibraphone", "Marimba", "Xylophone", "Tubular Bells", "Dulcimer"],
-                         "Organ": ["Drawbar Organ", "Percussive Organ", "Rock Organ", "Church Organ", "Reed Organ", "Accoridan", "Harmonica", "Tango Accordian"],
-                         "Guitar": ["Nylon String Guitar", "Steel String Guitar", "Electric Jazz Guitar", "Electric Clean Guitar", "Electric Muted Guitar", 
+instrument_categories = {1: ["Acoustic Grand", "Bright Acoustic", "Electric Grand", "Honky-Tonk", "Electric Piano", "Harpsichord", "Clavinet"], #Piano
+                         2: ["Celesta", "Glockenspiel", "Music Box", "Vibraphone", "Marimba", "Xylophone", "Tubular Bells", "Dulcimer"], #Chromatic Percussion
+                         3: ["Drawbar Organ", "Percussive Organ", "Rock Organ", "Church Organ", "Reed Organ", "Accoridan", "Harmonica", "Tango Accordian"], #Organ
+                         4: ["Nylon String Guitar", "Steel String Guitar", "Electric Jazz Guitar", "Electric Clean Guitar", "Electric Muted Guitar", #Guitar
                                     "Overdriven Guitar", "Distortion Guitar", "Guitar Harmonics"],
-                         "Bass": ["Acoustic Bass", "Electric Bass", "Fretless Bass", "Slap Bass", "Synth Bass"],
-                         "Solo Strings": ["Violin", "Viola", "Cello", "Contrabass", "Tremolo Strings", "Pizzicato Strings", "Orchestral Strings", "Timpani"],
-                         "Ensemble": ["String Ensemble", "SynthStrings", "Choir Aahs", "Voice Oohs", "Synth Voice", "Orchestra Hit"],
-                         "Brass": ["Trumpet", "Trombone", "Tuba", "Muted Trumpet", "French Horn", "Brass Section", "SynthBrass"],
-                         "Reed": ["Soprano Sax", "Alto Sax", "Tenor Sax", "Baritone Sax", "Oboe", "English Horn", "Bassoon", "Clarinet"],
-                         "Pipe": ["Piccolo", "Flute", "Recorder", "Pan Flute", "Blown Bottle", "Shakuhachi", "Whistle", "Ocarina"],
-                         "Synth Lead": ["Square Wave", "Saw Wave", "Syn. Calliope", "Chiffer Lead", "Charang", "Solo Vox", "5th Saw Wave", "Bass & Lead"],
-                         "Synth Pad": ["Fantasia", "Warm Pad", "Polysynth", "Space Voice", "Bowed Glass", "Metal Pad", "Halo Pad", "Sweep Pad"],
-                         "Synth Effects": ["Ice Rain", "Soundtrack", "Crystal", "Atmosphere", "Brightness", "Goblin", "Echo Drops", "Star Theme"],
-                         "Ethnic": ["Sitar", "Banjo", "Shamisen", "Koto", "Kalimba", "Bagpipe", "Fiddle", "Shanai"], 
-                         "Percussive": ["Tinkle Bell", "Agogo", "Steel Drums", "Woodblock", "Taiko Drum", "Melodic Tom", "Synth Drum", "Reverse Cymbal"],
-                         "Sound effects": ["Guitar Fret Noise", "Breath Noise", "Seashore", "Bird Tweet", "Telephone Ring", "Helicopter", "Applause", "Gunshot"]
+                         5: ["Acoustic Bass", "Electric Bass", "Fretless Bass", "Slap Bass", "Synth Bass"], #Bass
+                         6: ["Violin", "Viola", "Cello", "Contrabass", "Tremolo Strings", "Pizzicato Strings", "Orchestral Strings", "Timpani"], #Solo Strings
+                         7: ["String Ensemble", "SynthStrings", "Choir Aahs", "Voice Oohs", "Synth Voice", "Orchestra Hit"], #Ensemble
+                         8: ["Trumpet", "Trombone", "Tuba", "Muted Trumpet", "French Horn", "Brass Section", "SynthBrass"], #Brass
+                         9: ["Soprano Sax", "Alto Sax", "Tenor Sax", "Baritone Sax", "Oboe", "English Horn", "Bassoon", "Clarinet"], #Reed
+                         10: ["Piccolo", "Flute", "Recorder", "Pan Flute", "Blown Bottle", "Shakuhachi", "Whistle", "Ocarina"], #Pipe
+                         11: ["Square Wave", "Saw Wave", "Syn. Calliope", "Chiffer Lead", "Charang", "Solo Vox", "5th Saw Wave", "Bass & Lead"], #Synth Lead
+                         12: ["Fantasia", "Warm Pad", "Polysynth", "Space Voice", "Bowed Glass", "Metal Pad", "Halo Pad", "Sweep Pad"], #Synth Pad
+                         13: ["Ice Rain", "Soundtrack", "Crystal", "Atmosphere", "Brightness", "Goblin", "Echo Drops", "Star Theme"], #Synth Effects
+                         14: ["Sitar", "Banjo", "Shamisen", "Koto", "Kalimba", "Bagpipe", "Fiddle", "Shanai"], #Ethnic
+                         15: ["Tinkle Bell", "Agogo", "Steel Drums", "Woodblock", "Taiko Drum", "Melodic Tom", "Synth Drum", "Reverse Cymbal"], #Percussive
+                         16: ["Guitar Fret Noise", "Breath Noise", "Seashore", "Bird Tweet", "Telephone Ring", "Helicopter", "Applause", "Gunshot"] #Sound effects
 }
 
 
+def compute_instrument_cats_code(instrument_list):
+    categories = []
+    for instrument in instrument_list:
+        for key in instrument_categories:
+            for instr in instrument_categories[key]:
+                if(instr in instrument): #instr in categorized list is most simple (no numberings, tec.)
+                    categories.append(key)
+    return hash(categories)
 
 
 
@@ -142,6 +151,7 @@ def extract_features(score):
 
     key_counts = {}
     time_sig_counts = {}
+    parts_list = []
     #get most frequent/main key signature
     for part in parts:
         note_array = pt.musicanalysis.compute_note_array(part, include_key_signature = True, include_time_signature = True)
@@ -164,6 +174,9 @@ def extract_features(score):
             else:
                 time_sig_counts[time_sig_code] = 1
 
+        #collect part names
+        parts_list.append(part.name)
+
     most_frequent_key = max(key_counts, key=key_counts.get)
     print("most frequent key code:", most_frequent_key)
 
@@ -177,10 +190,18 @@ def extract_features(score):
     print("num time signatures", num_time_signatures)
 
     #get num instruments
+    num_instruments = len(parts_list)
+    print("Number of Instruments:", num_instruments)
 
-    #get instrument category sum
+    #get instrument categories code
+    cats_code = compute_instrument_cats_code(parts_list)
+    print("Categories code: ", cats_code)
+    
+    print("Instrument list: ", parts_list)
 
-    #get dynamics
+    #get dynamic variety; this is often missing. maybe use velocity from pretty midi?
+
+    #get dynamic loudness
 
     #get number of rests 
     num_rests = 0
