@@ -137,8 +137,9 @@ def test_out_library(score): #note in midis some of this data may be missing and
 
     print("Compute Note Array of Part with Some information:") #format is (...default info, note ID, pitch spelling letter, accidental (0 = flat, 1 = sharp?), octave num, ''(if grace nots), key sig num 1 (accidentals), key sig num 2 (mode), time_sig num, time_sig denom, beats)
     #use this, lots of info and better formed than straight time sign estimate...
-    #for part in parts:
-    #    print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
+    for part in parts:
+        print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
+    
 
 def extract_features(score):
     parts = score.parts
@@ -152,9 +153,11 @@ def extract_features(score):
     key_counts = {}
     time_sig_counts = {}
     parts_list = []
+    parts_velocity_arrays = []
     #get most frequent/main key signature
     for part in parts:
         note_array = pt.musicanalysis.compute_note_array(part, include_key_signature = True, include_time_signature = True)
+        velocity_array = []
         for note in note_array:
             #key signature information
             key_sig_accidentals = note[9]
@@ -173,6 +176,11 @@ def extract_features(score):
                 time_sig_counts[time_sig_code] += 1
             else:
                 time_sig_counts[time_sig_code] = 1
+
+            #get velocity array for the part
+            velocity_array.append(note[5])
+
+        parts_velocity_arrays.append(velocity_array)
 
         #collect part names
         parts_list.append(part.part_name)
@@ -224,8 +232,8 @@ def extract_features(score):
 def main(): #take this away later so this file can just be run by the system
     input_filename = sys.argv[1]
     input_score = pt.load_score(input_filename) #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
-    #test_out_library(input_score)
-    extract_features(input_score)
+    test_out_library(input_score)
+    #extract_features(input_score)
     #print(parts)
     #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
     #
