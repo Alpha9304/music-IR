@@ -1,6 +1,9 @@
 import sys
 import partitura as pt
 import re
+import numpy as np
+from collections import OrderedDict
+import statistics as stats
 
 #convert (accidentals, mode) to a unique single digit
 key_sig_map = {(0, 0): 0, (0, 1): 1, (1, 0): 2, (1, 1): 3, (-1, 0): 4, (-1, 1): 5, (2, 0): 6, (2, 1): 7, (-2, 0): 8, (-2, 1): 9, (3, 0): 10, (3, 1): 11, (-3, 0): 12, (-3, 1): 13, 
@@ -27,14 +30,14 @@ instrument_categories = {1: ["Acoustic Grand", "Bright Acoustic", "Electric Gran
 }
 
 
-def compute_instrument_cats_code(instrument_list):
+def compute_instrument_cats(instrument_list):
     categories = []
     for instrument in instrument_list:
         for key in instrument_categories:
             for instr in instrument_categories[key]:
                 if(instr in instrument): #instr in categorized list is most simple (no numberings, tec.)
                     categories.append(key)
-    return hash(tuple(categories))
+    return categories
 
 
 
@@ -141,8 +144,25 @@ def test_out_library(score): #note in midis some of this data may be missing and
         print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
     
 
-def extract_features(score):
-    parts = score.parts
+def extract_features(input_filename):
+    input_score = pt.load_score(input_filename) 
+    parts = input_score.parts
+    performed_music = pt.load_performance(input_filename) #ignores key signature information
+    performed_parts = performed_music.performedparts
+    
+    #get velocities from the performance
+    onset_velocity_per_part = OrderedDict()
+    for part in performed_parts:
+        #print(part.note_array().dtype)
+        note_array = part.note_array()
+        for note in note_array:
+            #print(note)
+            #get velocity dict for part; onset to keep the arrays aligned
+            if(note[0] not in onset_velocity_per_part):
+                onset_velocity_per_part[note[0]] = [note[5]]
+            else:
+                onset_velocity_per_part[note[0]].append(note[5])
+
 
     #get number of parts
     num_parts = len(parts)
@@ -153,11 +173,9 @@ def extract_features(score):
     key_counts = {}
     time_sig_counts = {}
     parts_list = []
-    parts_velocity_arrays = []
     #get most frequent/main key signature
     for part in parts:
         note_array = pt.musicanalysis.compute_note_array(part, include_key_signature = True, include_time_signature = True)
-        velocity_array = []
         for note in note_array:
             #key signature information
             key_sig_accidentals = note[9]
@@ -171,16 +189,13 @@ def extract_features(score):
             #time signature information
             time_sig_num = note[11]
             time_sig_denom = note[12]
-            time_sig_code = hash((note[11], note[12]))
-            if time_sig_code in time_sig_counts:
-                time_sig_counts[time_sig_code] += 1
+            if (note[11], note[12]) in time_sig_counts:
+                time_sig_counts[(note[11], note[12]) ] += 1
             else:
-                time_sig_counts[time_sig_code] = 1
+                time_sig_counts[(note[11], note[12]) ] = 1
 
-            #get velocity array for the part
-            velocity_array.append(note[5])
-
-        parts_velocity_arrays.append(velocity_array)
+      
+            
 
         #collect part names
         parts_list.append(part.part_name)
@@ -192,24 +207,51 @@ def extract_features(score):
     num_key_signatures = len(key_counts)
     print("num key signatures: ", num_key_signatures)
 
+    #maybe encode key sigs into an array
+
     #get number of time signatures
     print(time_sig_counts)
     num_time_signatures = len(time_sig_counts)
     print("num time signatures", num_time_signatures)
 
+    #get main (most frequent) time signature
+    most_frequent_time_signature = max(time_sig_counts, key = time_sig_counts.get)
+    print("most frequent time signature:", most_frequent_time_signature)
+
     #get num instruments
     num_instruments = len(parts_list)
     print("Number of Instruments:", num_instruments)
 
-    #get instrument categories code
-    cats_code = compute_instrument_cats_code(parts_list)
-    print("Categories code: ", cats_code)
+    #get instrument categories codes
+    instr_categories = compute_instrument_cats(parts_list)
+    print("Categories codes: ", instr_categories)
     
     print("Instrument list: ", parts_list)
 
-    #get dynamic variety; this is often missing. maybe use velocity from pretty midi?
+    #get dynamic variety; this is often missing. use velocity instead
 
-    #get dynamic loudness
+    #get note velocity over all parts
+    all_part_velocity = []
+    for onset in onset_velocity_per_part:
+        total_velocity = np.sum(np.array(onset_velocity_per_part[onset]))
+        all_part_velocity.append(total_velocity)
+
+
+    #get dynamic variety: sample max, min, mean, and mode, median from this array
+    max_velocity = max(all_part_velocity)
+    print("Max Velocity:", max_velocity)
+
+    min_velocity = min(all_part_velocity)
+    print("Min Velocity:", min_velocity)
+
+    mean_velocity = stats.mean(all_part_velocity)
+    print("Mean Velocity: ", mean_velocity)
+
+    med_velocity = stats.median(all_part_velocity)
+    print("Median Velocity: ", med_velocity)
+
+    mode_velocity = stats.mode(all_part_velocity)
+    print("Mode Velocity: ", mode_velocity )
 
     #get number of rests 
     num_rests = 0
@@ -227,13 +269,50 @@ def extract_features(score):
     avg_measures = total_measures/num_parts
     print("avg measures per  part: ", avg_measures)
 
+    feature_vector = [0] * 58
+
+    #key information, one slot per key (0-29)
+    for key in key_counts:
+        feature_vector[key] = key_counts[key] #encodes the number and variety of signatures, as well as the most and least frequent one
+
+    #time signature information: main signature num, denom, and number of time signatures (30-32)
+    feature_vector[30] = int(most_frequent_time_signature[0])
+    feature_vector[31] = int(most_frequent_time_signature[1])
+    feature_vector[32] = num_time_signatures
+
+    #instrument information: number of instruments and which categories are present (0 or 1); note category 0 is other; slots (33-50)
+    feature_vector[33] = num_instruments
+    for i in range(len(instr_categories)):
+        print(instr_categories[i])
+        feature_vector[33 + instr_categories[i]] = 1
     
+    if(len(instr_categories) == 0): #non of the defined categories of instruments were present
+        feature_vector[50] = 1
+
+    #velocity (total of all parts!) information: max, min, mean, median, and mode (slots 51-55)
+    feature_vector[51] = int(max_velocity)
+    feature_vector[52] = int(min_velocity)
+    feature_vector[53] = float(mean_velocity)
+    feature_vector[54] = int(med_velocity)
+    feature_vector[55] = int(mode_velocity)
+
+    #rest information: number of rests (slot 56)
+    feature_vector[56] = num_rests
+
+    #measure information: length aka average per part
+    feature_vector[57] = avg_measures
+
+    print("Feature vector:", feature_vector) #should be python dtypes not np dtypes
+    return feature_vector
+        
+
+
 
 def main(): #take this away later so this file can just be run by the system
     input_filename = sys.argv[1]
-    input_score = pt.load_score(input_filename) #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
-    test_out_library(input_score)
-    #extract_features(input_score)
+    #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
+    #test_out_library(input_score)
+    extract_features(input_filename)
     #print(parts)
     #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
     #
