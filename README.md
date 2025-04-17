@@ -6,7 +6,7 @@ Contains text information about the midi style in this format: filename !!! comp
 
 ### Midi Sources
 - http://www.jsbach.net/midi/
-- https://www.vgmusic.com/music/console/nintendo/wiiu/
+- https://www.vgmusic.com/music/
 - https://www.midiworld.com/
 - https://www.classicalarchives.com/midi.html
 - https://www.vgmusic.com/

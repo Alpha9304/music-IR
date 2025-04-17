@@ -36,3 +36,32 @@ Dr_Dre_-_Still_Dre.mid !!! Dr. Dre !!! Rap !!! Still Dre
 Dr_Dre_-_Dre_Day.mid !!! Dr. Dre !!! Rap !!! Dre Day
 Notorious_BIG_-_Miss_U.mid !!! Notorious BIG !!! Rap !!! Miss U
 Tupac_Shakur_-_California_Love.mid !!! Tupac Shakur !!! Rap !!! California Love
+Ace_Castlevania_DoS-Cursed_Clock_Tower.mid !!! Michiru Yamane !!! Video Game !!! Cursed Clock Tower
+FF3_caveofcrystals.mid !!! Nobuo Uematsu !!! Video Game !!! The Cave Where the Crystal Lies
+Syrcus_tower.mid !!! Nobuo Uematsu !!! Video Game !!! The Crystal Tower
+t_k_41.mid !!! Jun Ishikawa !!! Video Game !!! Drawcia Sorceress
+PipeWorks.mid !!! Lawrence Schwelder !!! Video Game !!! World 3: Pipe Works
+Marche_aux_Flambeaux.mid !!! F.S. Clark !!! March !!! Marche aux Flambeaux
+TransitOfVenus.mid !!! J.P. Sousa !!! March !!! Transit of Venus March
+sousa_washington_post.mid !!! J.P. Sousa !!! March !!! The Washington Post
+05MarchOfTheWoodenSoldiers.mid !!! Tchaikovsky !!! March !!! March of the Wooden Soldiers
+Geliebter Jesu - From Cantata No. 16.mid !!! Bach !!! Baroque !!! Geliebter Jesu - From Cantata No. 16
+debussy_Ste_Bergamesq_Clair.mid !!! Debussy !!! Classical !!! Clair de Lune
+Celle.mid !!! E. Satie !!! Classical !!! Celle qui parle trop
+Regrets.mid !!! E. Satie !!! Classical !!! Danse maigre
+caromioben.mid !!! G. Giordano !!! Classical !!! Caro Mio Ben
+National_Anthems_-_Bahamas.mid !!! Timothy Gibson !!! Song !!! March On, Bahamaland
+National_Anthems_-_Brazil.mid !!! Francisco Manuel da Silva !!! Song !!! Brazilian National Anthem
+National_Anthems_-_Nigeria.mid !!! Frances Benda !!! Song !!! Nigeria, We Hail Thee
+Undertale_-_Bonetrousle.mid !!! Toby Fox !!! Video Game !!! Bonetrousle
+Toby_Fox_-_Undertale_-_Waterfall_-_Piano_Arranged.mid !!! Toby Fox !!! Video Game !!! Waterfall
+Undertale_-_Spear_Of_Justice.mid !!! Toby Fox !!! Video Game !!! Spear of Justice
+John_Denver_-_Take_Me_Home_Country_Roads.mid !!! John Denver !!! Country !!! Take Me Home Country Roads
+Bluegrass_-_Foggy_Mountain_Breakdown.mid !!! Earl Scruggs !!! Country !!! Foggy Mountain Breakdowns
+Bob_Wills_-_Faded_Love.mid !!! Bob Wills !!! Country !!! Faded Love
+Dixie_Chicks_-_There's_Your_Trouble.mid !!! Dixie Chicks !!! Country !!! There's Your Trouble
+LeAnn_Rimes_-_Blue.mid !!! LeAnn Rimes !!! Country !!! Blue
+Movie_Themes_-_Jaws.mid !!! John Williams !!! Movie !!! Jaws Movie Theme
+Movie_Themes_-_The_Matrix.mid !!! Don Davis !!! Movie !!! The Matrix Theme
+Movie_Themes_-_Star_Wars_-_by_John_Willams.mid !!! Johns Williams !!! Movie !!! Star Wars Theme
+Movie_Themes_-_The_Wizard_of_Oz_-_Over_the_Rainbow.mid !!! Harold Arlen !!! Movie !!! Over the Rainbow
