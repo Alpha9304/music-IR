@@ -1,0 +1,22 @@
+bjsbmm01.mid !!! Bach !!! Classical !!! Mass in B Minor - Kyrie eleison
+bwv1052a.mid !!! Bach !!! Classical !!! Harpsichord Concerto No.1 in D minor - Allegro
+bwv906a.mid !!! Bach !!! Classical !!! Fantasia and Fugue in C minor - Fantasia
+bwv906b.mid !!! Bach !!! Classical !!! Fantasia and Fugue in C minor - Fugue
+bwv0243.mid !!! Bach !!! Classical !!! Magnificat in D major
+ghirahim_theme.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Ghirahim's Theme
+death_swordseq.mid !!! Toru Minegishi !!! Video Game !!! Death Sword
+wiiSaving_Midna.mid !!! Toru Minegishi !!! Video Game !!! Midna's Lament
+Gyro_ZeldaSS_BossBattleMoldarach.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Moldarach Boss Theme
+Skyward_Sword_-_Ballad_of_Goddess.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Ballad of the Goddess
+m64docks.mid !!! Koji Kondo !!! Video Game !!! Dire Dire Docks
+Aaliyah_-_Are_You_That_Somebody.mid !!! Aaliyah !!! Pop !!! Are You That Somebody
+Toby_Fox_-_Undertale_-_Bergentruckung_and_Asgore_-_Piano_-_Hard_Version.mid !!! Toby Fox !!! Video Game !!! Bergentruckung/Asgore
+Interstellar - Mountains.mid !!! Hans Zimmer !!! Movie !!! Mountains
+Interstellar - Day One.mid !!! Hans Zimmer !!! Movie !!! Day One
+EliteSyncopations.mid !!! S. Joplin !!! Jazz !!! Elite Syncopations
+SomethingDoing.mid !!! S. Joplin !!! Jazz !!! Something Doing
+little-toy-lost.mid !!! A. Sidwell !!! Jazz !!! Little Toy Lost
+turpin.mid !!! T. Turpin !!! Jazz !!! The St.Louis Rag
+quartet-in-GMaj.mid !!! Haydn !!! Classical !!! String Quartet in G Major
+quartet-in-Dm.mid !!! Haydn !!! Classical !!! String Quartet in D Minor
+anna-magdalena-20a.mid !!! Bach !!! Classical !!! Aria
