@@ -6,6 +6,7 @@ from collections import OrderedDict
 import statistics as stats
 import os
 import warnings
+from numpy.linalg import norm
 
 #convert (accidentals, mode) to a unique single digit; major is 1, minor is -1...
 key_sig_map = {(0, -1): 0, (0, 1): 1, (1, -1): 2, (1, 1): 3, (-1, -1): 4, (-1, 1): 5, (2, -1): 6, (2, 1): 7, (-2, -1): 8, (-2, 1): 9, (3, -1): 10, (3, 1): 11, (-3, -1): 12, (-3, 1): 13, 
@@ -145,6 +146,16 @@ def test_out_library(score): #note in midis some of this data may be missing and
     for part in parts:
         print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
     
+#vector similarity computation (cosine)
+def cosine_sim(x, y):
+    length = len(y)
+    if(len(x) < len(y)):
+        length = len(x)
+    num = np.dot(x[:length], y[:length])
+    if num == 0:
+        return 0
+    return num / (norm(x) * norm(y))
+
 
 def extract_features(input_filename):
     input_score = pt.load_score(input_filename) 
@@ -312,25 +323,42 @@ def vectorize_collection():
     vector_col = {}
     for i in range(len(midi_file_names)):
         name = midi_file_names[i]
-        print(name)
+        #print(name) #line that helps see what file has issues
         vector = extract_features("./midi-collection/" + name)
         vector_col[name] = vector
     return vector_col
 
+def compute_most_similar(query_vec, collection_vecs, k=5):
+    print("query vector:", query_vec)
+    midi_score_list = []
+    top_k = []
+    for key in collection_vecs:
+        vector = collection_vecs[key]
+        score = cosine_sim(query_vec, vector)
+        midi_score_list.append((key, float(score), vector)) #vector for now, just to look at it
+
+    midi_score_list.sort(key = lambda x: x[1], reverse=True)
+
+    for i in range(k):
+        top_k.append(midi_score_list[i])
+    return top_k
+
+
 
 
 def main(): #take this away later so this file can just be run by the system
-    warnings.filterwarnings("ignore")
+    warnings.filterwarnings("ignore") #partitura gives a lot of warnings, may just be old...
     input_filename = sys.argv[1]
     #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
     #test_out_library(input_score)
     input_vector = extract_features(input_filename)
-    print("Input vector", input_vector)
+    #print("Input vector", input_vector)
     midi_vecs =vectorize_collection()
-    print(midi_vecs)
-    #print(parts)
-    #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
-    #
+    #print(midi_vecs)
+    top_k_similar = compute_most_similar(input_vector, midi_vecs)
+    print(top_k_similar)
+    #seems to work well...how to score and improve?...
 
+    #check composer and genre? need to group some genres into categories; maybe check instrument/key similarity? idk...
 if __name__ == '__main__':
     main()
