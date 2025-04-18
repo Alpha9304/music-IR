@@ -4,11 +4,13 @@ import re
 import numpy as np
 from collections import OrderedDict
 import statistics as stats
+import os
+import warnings
 
-#convert (accidentals, mode) to a unique single digit
-key_sig_map = {(0, 0): 0, (0, 1): 1, (1, 0): 2, (1, 1): 3, (-1, 0): 4, (-1, 1): 5, (2, 0): 6, (2, 1): 7, (-2, 0): 8, (-2, 1): 9, (3, 0): 10, (3, 1): 11, (-3, 0): 12, (-3, 1): 13, 
-               (4, 0): 14, (4, 1): 15, (-4, 0): 16, (-4, 1): 17, (5, 0): 18, (5, 1): 19, (-5, 0): 20, (-5, 1): 21, (6, 0): 22, (6, 1): 23, (-6, 0): 24, (-6, 1): 25, (7, 0): 26, 
-               (7, 1): 27, (-7, 0): 28, (-7, 1): 29}
+#convert (accidentals, mode) to a unique single digit; major is 1, minor is -1...
+key_sig_map = {(0, -1): 0, (0, 1): 1, (1, -1): 2, (1, 1): 3, (-1, -1): 4, (-1, 1): 5, (2, -1): 6, (2, 1): 7, (-2, -1): 8, (-2, 1): 9, (3, -1): 10, (3, 1): 11, (-3, -1): 12, (-3, 1): 13, 
+               (4, -1): 14, (4, 1): 15, (-4, -1): 16, (-4, 1): 17, (5, -1): 18, (5, 1): 19, (-5, -1): 20, (-5, 1): 21, (6, -1): 22, (6, 1): 23, (-6, -1): 24, (-6, 1): 25, (7, -1): 26, 
+               (7, 1): 27, (-7, -1): 28, (-7, 1): 29}
 
 instrument_categories = {1: ["Acoustic Grand", "Bright Acoustic", "Electric Grand", "Honky-Tonk", "Electric Piano", "Harpsichord", "Clavinet"], #Piano
                          2: ["Celesta", "Glockenspiel", "Music Box", "Vibraphone", "Marimba", "Xylophone", "Tubular Bells", "Dulcimer"], #Chromatic Percussion
@@ -166,7 +168,7 @@ def extract_features(input_filename):
 
     #get number of parts
     num_parts = len(parts)
-    print("number of instruments", num_parts)
+    #print("number of instruments", num_parts)
 
     #get tempo
 
@@ -179,7 +181,7 @@ def extract_features(input_filename):
         for note in note_array:
             #key signature information
             key_sig_accidentals = note[9]
-            key_sig_mode = note[10] #how to translate this to a numeric identifier?; can't just sum them...
+            key_sig_mode = note[10] 
             key_sig_code = key_sig_map[(key_sig_accidentals, key_sig_mode)]
             if key_sig_code in key_counts:
                 key_counts[key_sig_code] += 1
@@ -201,64 +203,64 @@ def extract_features(input_filename):
         parts_list.append(part.part_name)
 
     most_frequent_key = max(key_counts, key=key_counts.get)
-    print("most frequent key code:", most_frequent_key)
+    #print("most frequent key code:", most_frequent_key)
 
     #get number of key_changes/key signatures
     num_key_signatures = len(key_counts)
-    print("num key signatures: ", num_key_signatures)
+    #print("num key signatures: ", num_key_signatures)
 
     #maybe encode key sigs into an array
 
     #get number of time signatures
-    print(time_sig_counts)
+    #print(time_sig_counts)
     num_time_signatures = len(time_sig_counts)
-    print("num time signatures", num_time_signatures)
+    #print("num time signatures", num_time_signatures)
 
     #get main (most frequent) time signature
     most_frequent_time_signature = max(time_sig_counts, key = time_sig_counts.get)
-    print("most frequent time signature:", most_frequent_time_signature)
+    #print("most frequent time signature:", most_frequent_time_signature)
 
     #get num instruments
     num_instruments = len(parts_list)
-    print("Number of Instruments:", num_instruments)
+    #print("Number of Instruments:", num_instruments)
 
     #get instrument categories codes
     instr_categories = compute_instrument_cats(parts_list)
-    print("Categories codes: ", instr_categories)
+    #print("Categories codes: ", instr_categories)
     
-    print("Instrument list: ", parts_list)
+    #print("Instrument list: ", parts_list)
 
     #get dynamic variety; this is often missing. use velocity instead
 
-    #get note velocity over all parts
+    #get note velocity over all parts by averaging total over parts
     all_part_velocity = []
     for onset in onset_velocity_per_part:
-        total_velocity = np.sum(np.array(onset_velocity_per_part[onset]))
+        total_velocity = np.divide(np.sum(np.array(onset_velocity_per_part[onset])), num_parts)
         all_part_velocity.append(total_velocity)
 
 
     #get dynamic variety: sample max, min, mean, and mode, median from this array
     max_velocity = max(all_part_velocity)
-    print("Max Velocity:", max_velocity)
+    #print("Max Velocity:", max_velocity)
 
     min_velocity = min(all_part_velocity)
-    print("Min Velocity:", min_velocity)
+    #print("Min Velocity:", min_velocity)
 
     mean_velocity = stats.mean(all_part_velocity)
-    print("Mean Velocity: ", mean_velocity)
+    #print("Mean Velocity: ", mean_velocity)
 
     med_velocity = stats.median(all_part_velocity)
-    print("Median Velocity: ", med_velocity)
+    #print("Median Velocity: ", med_velocity)
 
     mode_velocity = stats.mode(all_part_velocity)
-    print("Mode Velocity: ", mode_velocity )
+    #print("Mode Velocity: ", mode_velocity )
 
     #get number of rests 
     num_rests = 0
     for part in parts:
         rests = part.rests
         num_rests += len(rests)
-    print("total rests: " , num_rests)
+    #print("total rests: " , num_rests)
 
     #get average number of measures per part
     total_measures = 0
@@ -267,7 +269,7 @@ def extract_features(input_filename):
         total_measures += len(measures)
 
     avg_measures = total_measures/num_parts
-    print("avg measures per  part: ", avg_measures)
+    #print("avg measures per  part: ", avg_measures)
 
     feature_vector = [0] * 58
 
@@ -283,7 +285,7 @@ def extract_features(input_filename):
     #instrument information: number of instruments and which categories are present (0 or 1); note category 0 is other; slots (33-50)
     feature_vector[33] = num_instruments
     for i in range(len(instr_categories)):
-        print(instr_categories[i])
+        #print(instr_categories[i])
         feature_vector[33 + instr_categories[i]] = 1
     
     if(len(instr_categories) == 0): #non of the defined categories of instruments were present
@@ -302,17 +304,30 @@ def extract_features(input_filename):
     #measure information: length aka average per part
     feature_vector[57] = avg_measures
 
-    print("Feature vector:", feature_vector) #should be python dtypes not np dtypes
-    return feature_vector
-        
+    return feature_vector #should be python dtypes not np dtypes
+
+def vectorize_collection():
+    path = "./midi-collection"
+    midi_file_names = os.listdir(path)
+    vector_col = {}
+    for i in range(len(midi_file_names)):
+        name = midi_file_names[i]
+        print(name)
+        vector = extract_features("./midi-collection/" + name)
+        vector_col[name] = vector
+    return vector_col
 
 
 
 def main(): #take this away later so this file can just be run by the system
+    warnings.filterwarnings("ignore")
     input_filename = sys.argv[1]
     #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
     #test_out_library(input_score)
-    extract_features(input_filename)
+    input_vector = extract_features(input_filename)
+    print("Input vector", input_vector)
+    midi_vecs =vectorize_collection()
+    print(midi_vecs)
     #print(parts)
     #print(input_score_parts.key_signature_map(input_score_parts.notes[0].start.ts))
     #

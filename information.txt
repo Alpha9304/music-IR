@@ -27,8 +27,6 @@ The_Fifth_Dimension_-_Wedding_Bell_Blues.mid !!! The Fifth Dimension !!! Blues !
 The_Moody_Blues_-_For_My_Lady.mid !!! The Moody Blues !!! Blues !!! For My Lady
 Buddy_Guy_-_Midnight_Train.mid !!! Buddy Guy !!! Blues !!! Midnight Train
 Etta_James_-_Dance_With_Me_Henry.mid !!! Etta James !!! Blues !!! Dance with Me Henry
-Michael_Jackson_-_Rock_with_You.mid !!! Michael Jackson !!! Disco !!! Rock with You
-Aha_-_The_Sun_Always_Shines_On_TV.mid !!! Aha !!! Synth-pop !!! The Sun Always Shines on TV
 Al_Stewart_-_Year_of_the_Cat.mid !!! Al Stewart !!! Rock !!! Year of the Cat
 Alan_Parsons_-_Dont_Answer_Me.mid !!! Alan Parsons !!! Rock !!! Don’t Answer Me
 Alan_Parsons_-_Dont_Let_It_Show.mid !!! Alan Parsons !!! Rock !!! Don’t Let It Show
@@ -50,8 +48,6 @@ debussy_Ste_Bergamesq_Clair.mid !!! Debussy !!! Classical !!! Clair de Lune
 Celle.mid !!! E. Satie !!! Classical !!! Celle qui parle trop
 Regrets.mid !!! E. Satie !!! Classical !!! Danse maigre
 caromioben.mid !!! G. Giordano !!! Classical !!! Caro Mio Ben
-National_Anthems_-_Bahamas.mid !!! Timothy Gibson !!! Song !!! March On, Bahamaland
-National_Anthems_-_Brazil.mid !!! Francisco Manuel da Silva !!! Song !!! Brazilian National Anthem
 National_Anthems_-_Nigeria.mid !!! Frances Benda !!! Song !!! Nigeria, We Hail Thee
 Undertale_-_Bonetrousle.mid !!! Toby Fox !!! Video Game !!! Bonetrousle
 Toby_Fox_-_Undertale_-_Waterfall_-_Piano_Arranged.mid !!! Toby Fox !!! Video Game !!! Waterfall
