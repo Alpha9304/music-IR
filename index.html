@@ -3,7 +3,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Similar Music Finder</title>
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!--<link rel="icon" href="./public/icon.png" />-->
  </head>
  <body class = "bg-white overflow-hidden">
@@ -26,7 +26,7 @@
     <div id = "query_area" class = "mt-12 p-8">
         <p class = "text-xl">Enter a midi file here:</p>
         <form action="index.php" method="post" enctype="multipart/form-data" class="flex items-center gap-2 mt-4">
-            <input type="file" id="midi_file" name="query" accept="application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi, application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi" />
+            <input type="file" id="midi_file" name="query" class = "border border-black" accept="application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi, application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi" />
             <input type="Submit" class = "outline rounded bg-white p-2 ml-2 mt-24">
         </form>
     </div>  

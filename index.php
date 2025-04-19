@@ -2,11 +2,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Top 5 Similar Songs</title>
-  <link href="./src/output.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!--<link rel="icon" href="./public/icon.png" /> -->
  </head>
  <body class = "bg-white">
-  <nav class="bg-emerald-800 rounded-sm border-gray-200 flex items-center justify-between">
+  <nav class="bg-sky-300 rounded-sm border-gray-200 flex items-center justify-between">
           <!--<img src="./public/icon.png" style="width: 50px; height: 50px;" class="ml-2 mb-4" alt="Gun Range Search Site Logo" />-->
           <div class="hidden w-full md:block md:w-auto" id="navbar-default">
               <ul class="font-medium flex flex-row p-4 md:p-0 ml-4 mr-16 mt-12">
@@ -60,31 +60,8 @@
       if ($_FILES['query']['size'] > 1000000) {
           throw new RuntimeException('Exceeded filesize limit.');
       }
-  
-      // DO NOT TRUST $_FILES['query']['mime'] VALUE !!
-      // Check MIME Type 
-      $finfo = new finfo(FILEINFO_MIME_TYPE);
-      if (false === $ext = array_search(
-          $finfo->file($_FILES['query']['tmp_name']),
-          array(
-              'mid' => 'application/x-midi',
-              'mid' => 'audio/midi',
-              'mid' => 'audio/x-mid',
-              'mid' => 'audio/x-midi',
-              'mid' => 'music/crescendo',
-              'mid' => 'x-music/x-midi',
-              'midi' => 'application/x-midi',
-              'midi' => 'audio/midi',
-              'midi' => 'audio/x-mid',
-              'midi' => 'audio/x-midi',
-              'midi' => 'music/crescendo',
-              'midi' => 'x-music/x-midi',
-          ),
-          true
-      )) {
-          throw new RuntimeException('Invalid file format.');
-      }
-  
+      
+      //looks like the file download is having issues...
       $uploads_dir = 'user-input';
       $download_loc = '';
       foreach ($_FILES["query"]["error"] as $key => $error) {
