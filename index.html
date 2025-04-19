@@ -1,0 +1,38 @@
+<html>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Similar Music Finder</title>
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <!--<link rel="icon" href="./public/icon.png" />-->
+ </head>
+ <body class = "bg-white overflow-hidden">
+
+    <nav class="bg-sky-300 rounded-sm border-gray-200 flex items-center justify-between">
+        <!--<img src="./public/icon.png" style="width: 50px; height: 50px;" class="ml-2 mb-4" alt="Gun Range Search Site Logo" />-->
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul class="font-medium flex flex-row p-4 md:p-0 ml-4 mr-16 mt-12">
+            <li>
+                <a href="http://localhost/similar-music-finder/index.html" class="block py-2 px-3 text-white hover:underline" aria-current="page">Home</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+    <h1 class="text-6xl font-bold italic font-mono text-center text-yellow-950 pt-4">
+        Find Similar Music
+    </h1>
+
+    <div id = "query_area" class = "mt-12 p-8">
+        <p class = "text-xl">Enter a midi file here:</p>
+        <form action="index.php" method="post" enctype="multipart/form-data" class="flex items-center gap-2 mt-4">
+            <input type="file" id="midi_file" name="query" accept="application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi, application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi" />
+            <input type="Submit" class = "outline rounded bg-white p-2 ml-2 mt-24">
+        </form>
+    </div>  
+    
+ </body>
+</html>
+
+
+<!--http://localhost/similar-music-finder/index.html after running xampp apache-->
