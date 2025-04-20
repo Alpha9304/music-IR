@@ -11,7 +11,7 @@
           <div class="hidden w-full md:block md:w-auto" id="navbar-default">
               <ul class="font-medium flex flex-row p-4 md:p-0 ml-4 mr-16 mt-12">
               <li>
-                  <a href="http://localhost/similar-music-finder/index.html" class="block py-2 px-3 text-white hover:underline" aria-current="page">Home</a>
+                  <a href="http://localhost/music-IR/index.html" class="block py-2 px-3 text-white hover:underline" aria-current="page">Home</a>
               </li>
               </ul>
           </div>
