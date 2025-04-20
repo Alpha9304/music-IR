@@ -7,6 +7,7 @@ import statistics as stats
 import os
 import warnings
 from numpy.linalg import norm
+import json
 
 #convert (accidentals, mode) to a unique single digit; major is 1, minor is -1...
 key_sig_map = {(0, -1): 0, (0, 1): 1, (1, -1): 2, (1, 1): 3, (-1, -1): 4, (-1, 1): 5, (2, -1): 6, (2, 1): 7, (-2, -1): 8, (-2, 1): 9, (3, -1): 10, (3, 1): 11, (-3, -1): 12, (-3, 1): 13, 
@@ -44,19 +45,20 @@ def compute_instrument_cats(instrument_list):
 
 
 
-def read_data(file):
+def read_info(file):
     '''
-    Reads the data
+    Reads information.txt
     '''
-    documents = []
-    labels = []
+    collection = {}
     with open(file) as f:
         for line in f:
-            line_arr = line.strip().split()
-            label = line_arr[1]
-            document = ' '.join(line_arr[3:len(line_arr) - 1])
-            documents.append(document)
-            labels.append(label)
+            line_arr = line.strip().split("!!!")
+            for i in range(len(line_arr)):
+                line_arr[i] = line_arr[i].strip()
+            midi_file_name = line_arr[0]
+            collection[midi_file_name] = line_arr
+
+    return collection
 
 def test_out_library(score): #note in midis some of this data may be missing and will default to something; how do we indicate this
 
@@ -329,7 +331,7 @@ def vectorize_collection():
     return vector_col
 
 def compute_most_similar(query_vec, collection_vecs, k=5):
-    print("query vector:", query_vec)
+    #print("query vector:", query_vec)
     midi_score_list = []
     top_k = []
     for key in collection_vecs:
@@ -346,18 +348,32 @@ def compute_most_similar(query_vec, collection_vecs, k=5):
 
 
 
-def main(): #take this away later so this file can just be run by the system
+def main(): 
     warnings.filterwarnings("ignore") #partitura gives a lot of warnings, may just be old...
     input_filename = sys.argv[1]
-    #this means the UI will have to take in the uploaded file and put it in the system to load it; and then delete it after
+
+    midi_col_info = read_info('information.txt')
+    #print(midi_col_info)
+
+    
     #test_out_library(input_score)
     input_vector = extract_features(input_filename)
     #print("Input vector", input_vector)
     midi_vecs =vectorize_collection()
     #print(midi_vecs)
     top_k_similar = compute_most_similar(input_vector, midi_vecs)
-    print(top_k_similar)
+    top_k_info = []
+    for i in range(len(top_k_similar)):
+        midi_file = top_k_similar[i][0]
+        song_name = midi_col_info[midi_file][3]
+        composer = midi_col_info[midi_file][1]
+        top_k_info.append([song_name, composer])
+    
+    
+    print(json.dumps(top_k_info)) #the php will take all prints as output, use json to give it dtypes other than string
     #seems to work well...how to score and improve?...
+
+    #seems like maybe need to weight tempo higher...wait not getting tempo; figure that out? missing factor, good otherwise
 
     #check composer and genre? need to group some genres into categories; maybe check instrument/key similarity? idk...
 if __name__ == '__main__':

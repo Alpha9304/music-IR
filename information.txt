@@ -61,3 +61,10 @@ Movie_Themes_-_Jaws.mid !!! John Williams !!! Movie !!! Jaws Movie Theme
 Movie_Themes_-_The_Matrix.mid !!! Don Davis !!! Movie !!! The Matrix Theme
 Movie_Themes_-_Star_Wars_-_by_John_Willams.mid !!! Johns Williams !!! Movie !!! Star Wars Theme
 Movie_Themes_-_The_Wizard_of_Oz_-_Over_the_Rainbow.mid !!! Harold Arlen !!! Movie !!! Over the Rainbow
+bwv0202.mid !!! Bach !!! Classical !!! 'Weichet nur, betrübte Schatten' BWV 202
+bwv29sin.mid !!! Bach !!! Classical !!! Sinfonia
+bwv772.mid !!! Bach !!! Classical !!! Invention No. 1 - BWV 772
+bwv1030.mid !!! Bach !!! Classical !!! Sonata No. 1 in B minor - BWV 1030 for Flute and Harpsichord
+Legend_of_Zelda_-_Fis_Lament.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Fi's Theme
+twilight_princess_boss_blizzeta_pt2.mid !!! Toru Minegishi !!! Video Game !!! Blizetta Boss Battle - Part 2
+Hyrule_Field_Daytime_use_this_one.mid !!! Toru Minegishi !!! Video Game !!! Hyrule Field 3 (Daytime)

@@ -12,3 +12,7 @@ Contains text information about the midi style in this format: filename !!! comp
 - https://www.vgmusic.com/
 - http://www.pandatooth.com/sheet-music/
 - https://www.mutopiaproject.org/
+
+
+### Icon from Flaticon by Freepik
+https://www.flaticon.com/free-icons/music
