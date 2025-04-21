@@ -145,9 +145,15 @@ def test_out_library(score): #note in midis some of this data may be missing and
 
     print("Compute Note Array of Part with Some information:") #format is (...default info, note ID, pitch spelling letter, accidental (0 = flat, 1 = sharp?), octave num, ''(if grace nots), key sig num 1 (accidentals), key sig num 2 (mode), time_sig num, time_sig denom, beats)
     #use this, lots of info and better formed than straight time sign estimate...
-    for part in parts:
-        print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
+    #for part in parts:
+    #    print(pt.musicanalysis.compute_note_array(part, include_pitch_spelling = True, include_key_signature = True))#, include_time_signature = True, include_grace_notes = True))
     
+    print("Estimated Tempo:")
+    for part in parts:
+        tempo = pt.musicanalysis.estimate_time(part)["tempo"]
+        print(tempo)
+        break
+
 #vector similarity computation (cosine)
 def cosine_sim(x, y):
     length = len(y)
@@ -188,8 +194,12 @@ def extract_features(input_filename):
     key_counts = {}
     time_sig_counts = {}
     parts_list = []
+    tempo = -1 #each part should have the same tempo
     #get most frequent/main key signature
     for part in parts:
+        if(tempo == -1):
+            tempo = pt.musicanalysis.estimate_time(part)["tempo"]
+
         note_array = pt.musicanalysis.compute_note_array(part, include_key_signature = True, include_time_signature = True)
         for note in note_array:
             #key signature information
@@ -284,7 +294,9 @@ def extract_features(input_filename):
     avg_measures = total_measures/num_parts
     #print("avg measures per  part: ", avg_measures)
 
-    feature_vector = [0] * 58
+
+    #constuct the feature vector
+    feature_vector = [0] * 59
 
     #key information, one slot per key (0-29)
     for key in key_counts:
@@ -296,7 +308,7 @@ def extract_features(input_filename):
     feature_vector[32] = num_time_signatures
 
     #instrument information: number of instruments and which categories are present (0 or 1); note category 0 is other; slots (33-50)
-    feature_vector[33] = num_instruments
+    feature_vector[33] = num_instruments * 0.8 #I think this is less important, so *0.8
     for i in range(len(instr_categories)):
         #print(instr_categories[i])
         feature_vector[33 + instr_categories[i]] = 1
@@ -312,10 +324,13 @@ def extract_features(input_filename):
     feature_vector[55] = int(mode_velocity)
 
     #rest information: number of rests (slot 56)
-    feature_vector[56] = num_rests
+    feature_vector[56] = num_rests ** 2 #blow up larger numbers to emphasizes space; didn't do much, maybe just db size issue?
 
-    #measure information: length aka average per part
-    feature_vector[57] = avg_measures
+    #measure information: length aka average per part (slot 57)
+    feature_vector[57] = avg_measures * 0.75 #times 0.75 because I think this is less important
+
+    #tempo information (slot 58)
+    feature_vector[58] = float(tempo)
 
     return feature_vector #should be python dtypes not np dtypes
 
@@ -340,6 +355,7 @@ def compute_most_similar(query_vec, collection_vecs, k=5):
         midi_score_list.append((key, float(score), vector)) #vector for now, just to look at it
 
     midi_score_list.sort(key = lambda x: x[1], reverse=True)
+    #print(midi_score_list)
 
     for i in range(k):
         top_k.append(midi_score_list[i])
@@ -349,18 +365,22 @@ def compute_most_similar(query_vec, collection_vecs, k=5):
 
 
 def main(): 
+     
     warnings.filterwarnings("ignore") #partitura gives a lot of warnings, may just be old...
     input_filename = sys.argv[1]
 
     midi_col_info = read_info('information.txt')
     #print(midi_col_info)
 
-    
+    #input_score = pt.load_score(input_filename)
     #test_out_library(input_score)
+
     input_vector = extract_features(input_filename)
     #print("Input vector", input_vector)
-    midi_vecs =vectorize_collection()
+
+    midi_vecs = vectorize_collection()
     #print(midi_vecs)
+
     top_k_similar = compute_most_similar(input_vector, midi_vecs)
     top_k_info = []
     for i in range(len(top_k_similar)):
@@ -371,10 +391,12 @@ def main():
     
     
     print(json.dumps(top_k_info)) #the php will take all prints as output, use json to give it dtypes other than string
-    #seems to work well...how to score and improve?...
 
-    #seems like maybe need to weight tempo higher...wait not getting tempo; figure that out? missing factor, good otherwise
 
-    #check composer and genre? need to group some genres into categories; maybe check instrument/key similarity? idk...
+    #might want to weight instruments higher, maybe?...want to capture space more..weight num rests? like maybe squared to blow up larger numbers
+    #weights so far haven't changed anything, db too small? also next, try weight instruments and key higher; prob with Ida Red...really cared about tempo which is good but...
+
+    #do pre-vectorization next...once the database is bigger/finalized, use it to save time...; would need to write line by line the vectors...
+    #also consider tweaking the prepared vectors for testing speed...
 if __name__ == '__main__':
     main()

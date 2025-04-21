@@ -78,7 +78,7 @@
       */
 
       $results = json_decode(shell_exec("python process_music.py " .$download_loc), true); //should return an array?
-      $col_names = array("Song", "Composer");
+      $col_names = array("Song", "Composer (s)");
       $col_indices = array(0, 1);
       //display the results in a table
       echo "<table class='ml-2 mt-2 border-2 border-black shadow-lg' style='border: border-collapse: collapse; margin-left: auto; margin-right: auto; width: 50%;'>\n"; 

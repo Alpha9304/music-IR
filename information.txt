@@ -3,11 +3,11 @@ bwv1052a.mid !!! Bach !!! Classical !!! Harpsichord Concerto No.1 in D minor - A
 bwv906a.mid !!! Bach !!! Classical !!! Fantasia and Fugue in C minor - Fantasia
 bwv906b.mid !!! Bach !!! Classical !!! Fantasia and Fugue in C minor - Fugue
 bwv0243.mid !!! Bach !!! Classical !!! Magnificat in D major
-ghirahim_theme.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Ghirahim's Theme
-death_swordseq.mid !!! Toru Minegishi !!! Video Game !!! Death Sword
-wiiSaving_Midna.mid !!! Toru Minegishi !!! Video Game !!! Midna's Lament
-Gyro_ZeldaSS_BossBattleMoldarach.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Moldarach Boss Theme
-Skyward_Sword_-_Ballad_of_Goddess.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Ballad of the Goddess
+ghirahim_theme.mid !!! Hajime Wakai, Shiho Fujii, Mahito Yokota, Takeshi Hama, and Koji Kondo !!! Orchestral/Video Game !!! Ghirahim's Theme
+death_swordseq.mid !!! Toru Minegishi and Asuka Ohta !!! Video Game !!! Death Sword
+wiiSaving_Midna.mid !!! Toru Minegishi and Asuka Ohta !!! Video Game !!! Midna's Lament
+Gyro_ZeldaSS_BossBattleMoldarach.mid !!! Hajime Wakai, Shiho Fujii, Mahito Yokota, Takeshi Hama, and Koji Kondo !!! Orchestral/Video Game !!! Moldarach Boss Theme
+Skyward_Sword_-_Ballad_of_Goddess.mid !!! Hajime Wakai, Shiho Fujii, Mahito Yokota, Takeshi Hama, and Koji Kondo !!! Orchestral/Video Game !!! Ballad of the Goddess
 m64docks.mid !!! Koji Kondo !!! Video Game !!! Dire Dire Docks
 Aaliyah_-_Are_You_That_Somebody.mid !!! Aaliyah !!! Pop !!! Are You That Somebody
 Toby_Fox_-_Undertale_-_Bergentruckung_and_Asgore_-_Piano_-_Hard_Version.mid !!! Toby Fox !!! Video Game !!! Bergentruckung/Asgore
@@ -65,6 +65,18 @@ bwv0202.mid !!! Bach !!! Classical !!! 'Weichet nur, betrübte Schatten' BWV 202
 bwv29sin.mid !!! Bach !!! Classical !!! Sinfonia
 bwv772.mid !!! Bach !!! Classical !!! Invention No. 1 - BWV 772
 bwv1030.mid !!! Bach !!! Classical !!! Sonata No. 1 in B minor - BWV 1030 for Flute and Harpsichord
-Legend_of_Zelda_-_Fis_Lament.mid !!! Takeshi Hama !!! Orchestral/Video Game !!! Fi's Theme
-twilight_princess_boss_blizzeta_pt2.mid !!! Toru Minegishi !!! Video Game !!! Blizetta Boss Battle - Part 2
-Hyrule_Field_Daytime_use_this_one.mid !!! Toru Minegishi !!! Video Game !!! Hyrule Field 3 (Daytime)
+Legend_of_Zelda_-_Fis_Lament.mid !!! Hajime Wakai, Shiho Fujii, Mahito Yokota, Takeshi Hama, and Koji Kondo !!! Orchestral/Video Game !!! Fi's Theme
+twilight_princess_boss_blizzeta_pt2.mid !!! Toru Minegishi and Asuka Ohta !!! Video Game !!! Blizetta Boss Battle - Part 2
+Hyrule_Field_Daytime_use_this_one.mid !!! Toru Minegishi and Asuka Ohta !!! Video Game !!! Hyrule Field 3 (Daytime)
+Christmas_Carols_-_12_Days_Of_Christmas.mid !!! Frederic Austin !!! Carol !!! 12 Days of Christmas
+Christmas_Carols_-_Oh_Tannenbaum.mid !!! Ernst Anschutz !!! Folk Song !!! O Tannenbaum
+Christmas_Carols_-_Frosty_The_Snowman.mid !!! Walter Rollins and Steve Nelson !!! Carol !!! Frost the Snowman
+Blink_182_-_Adam's_Song.mid !!! Blink 182 !!! Punk !!! Adam's Song
+Fugazi_-_Waiting_Room.mid !!! Fugazi !!! Punk !!! Waiting Room
+Green_Day_-_Burn_Out.mid !!! Green Day !!! Punk !!! Burn Out
+Green_Day_-_Coming_Clean.mid !!! Green Day !!! Punk !!! Coming Clean
+Green_Day_-_86.mid !!! Green Day !!! Punk !!! 86
+Less_Than_Jake_-_9th_at_Pine.mid !!! Less Than Jake !!! Punk !!! 9th at Pine
+The_Offspring_-_Amazed.mid !!! The Offspring !!! Punk !!! Amazed
+Nintendo_-_Kirby_Gourmet_Race_Round_1_and_3_(5_Times).mid !!! Jun Ishikawa !!! Video Game !!! Gourmet Race (Round 1 and 3)
+Sonic_Advance_2_-_Hot_Crater_Act_2_(1).mid !!! Yutaka Minobe, Tatsuyuki Maeda and Teruhiko Nakagawa !!! Video Game !!! Hot Crater Act 2
