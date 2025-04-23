@@ -225,6 +225,8 @@ def extract_features(input_filename):
         #collect part names
         parts_list.append(part.part_name)
 
+
+    #these key stats are not not necesssary, inherent to the key section of the vector...
     most_frequent_key = max(key_counts, key=key_counts.get)
     #print("most frequent key code:", most_frequent_key)
 
@@ -232,7 +234,7 @@ def extract_features(input_filename):
     num_key_signatures = len(key_counts)
     #print("num key signatures: ", num_key_signatures)
 
-    #maybe encode key sigs into an array
+
 
     #get number of time signatures
     #print(time_sig_counts)
@@ -308,10 +310,10 @@ def extract_features(input_filename):
     feature_vector[32] = num_time_signatures
 
     #instrument information: number of instruments and which categories are present (0 or 1); note category 0 is other; slots (33-50)
-    feature_vector[33] = num_instruments * 0.8 #I think this is less important, so *0.8
+    feature_vector[33] = num_instruments 
     for i in range(len(instr_categories)):
         #print(instr_categories[i])
-        feature_vector[33 + instr_categories[i]] = 1
+        feature_vector[33 + instr_categories[i]] = 1 
     
     if(len(instr_categories) == 0): #non of the defined categories of instruments were present
         feature_vector[50] = 1
@@ -324,17 +326,17 @@ def extract_features(input_filename):
     feature_vector[55] = int(mode_velocity)
 
     #rest information: number of rests (slot 56)
-    feature_vector[56] = num_rests ** 2 #blow up larger numbers to emphasizes space; didn't do much, maybe just db size issue?
+    feature_vector[56] = num_rests 
 
     #measure information: length aka average per part (slot 57)
-    feature_vector[57] = avg_measures * 0.75 #times 0.75 because I think this is less important
+    feature_vector[57] = avg_measures 
 
     #tempo information (slot 58)
     feature_vector[58] = float(tempo)
 
     return feature_vector #should be python dtypes not np dtypes
 
-def vectorize_collection():
+def vectorize_collection(save=False):
     path = "./midi-collection"
     midi_file_names = os.listdir(path)
     vector_col = {}
@@ -343,15 +345,22 @@ def vectorize_collection():
         #print(name) #line that helps see what file has issues
         vector = extract_features("./midi-collection/" + name)
         vector_col[name] = vector
+
+    if(save):
+        with open("vector_collection.json", "w") as f:
+            json.dump(vector_col, f)
+
     return vector_col
 
-def compute_most_similar(query_vec, collection_vecs, k=5):
+def compute_most_similar(query_vec, collection_vecs, weight_vec, k=5):
     #print("query vector:", query_vec)
     midi_score_list = []
     top_k = []
     for key in collection_vecs:
         vector = collection_vecs[key]
-        score = cosine_sim(query_vec, vector)
+        weighted_vector = [vector[i] * weight_vec[i] for i in range(len(vector))]
+        weighted_q_vector = [query_vec[i] * weight_vec[i] for i in range(len(vector))]
+        score = cosine_sim(weighted_q_vector, weighted_vector)
         midi_score_list.append((key, float(score), vector)) #vector for now, just to look at it
 
     midi_score_list.sort(key = lambda x: x[1], reverse=True)
@@ -368,6 +377,7 @@ def main():
      
     warnings.filterwarnings("ignore") #partitura gives a lot of warnings, may just be old...
     input_filename = sys.argv[1]
+    use_precomputed = sys.argv[2] #TEST/CONSTRUCTION ONLY, COMMENT THIS OUT DURING REAL USE; will always use precomputed for real use
 
     midi_col_info = read_info('information.txt')
     #print(midi_col_info)
@@ -378,10 +388,30 @@ def main():
     input_vector = extract_features(input_filename)
     #print("Input vector", input_vector)
 
-    midi_vecs = vectorize_collection()
-    #print(midi_vecs)
+    if(use_precomputed != "true"):
+        print("Vectorizing...")
+        midi_vecs = vectorize_collection(True)
+    else:
+        with open('vector_collection.json') as json_f:
+            midi_vecs = json.load(json_f)
 
-    top_k_similar = compute_most_similar(input_vector, midi_vecs)
+    
+    #print(midi_vecs)
+    
+    weight_vector = [1] * 59
+    for i in range(30):
+        weight_vector[i] *= 1.5 #weight key counts higher bc they are more important 
+    
+    weight_vector[33] *= 0.8 #I think num instruments is less important, so *0.8
+
+    for i in range(34, 51):
+        weight_vector[i] *= 1.5 #multiplier bc instrument type more important
+
+    weight_vector[56] **= 2 #blow up larger numbers to emphasize rests (empty space); didn't do much, maybe just db size issue?
+
+    weight_vector[57] *= 0.75 #times 0.75 because I think length of song is less important
+
+    top_k_similar = compute_most_similar(input_vector, midi_vecs, weight_vector)
     top_k_info = []
     for i in range(len(top_k_similar)):
         midi_file = top_k_similar[i][0]
