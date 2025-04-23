@@ -400,7 +400,7 @@ def main():
     
     weight_vector = [1] * 59
     for i in range(30):
-        weight_vector[i] *= 1.5 #weight key counts higher bc they are more important 
+        weight_vector[i] *= 1.5 #weight key counts higher bc they are more important; I think this helped 
     
     weight_vector[33] *= 0.8 #I think num instruments is less important, so *0.8
 
@@ -410,6 +410,8 @@ def main():
     weight_vector[56] **= 2 #blow up larger numbers to emphasize rests (empty space); didn't do much, maybe just db size issue?
 
     weight_vector[57] *= 0.75 #times 0.75 because I think length of song is less important
+
+    weight_vector[58] *= 2 #I think tempo should be considered a bit more
 
     top_k_similar = compute_most_similar(input_vector, midi_vecs, weight_vector)
     top_k_info = []
