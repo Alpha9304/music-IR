@@ -379,7 +379,7 @@ def main():
      
     warnings.filterwarnings("ignore") #partitura gives a lot of warnings, may just be old...
     input_filename = sys.argv[1]
-    use_precomputed = sys.argv[2] #TEST/CONSTRUCTION ONLY, COMMENT THIS OUT DURING REAL USE; will always use precomputed for real use
+    #use_precomputed = sys.argv[2] #TEST/CONSTRUCTION ONLY, COMMENT THIS OUT DURING REAL USE; will always use precomputed for real use
 
     midi_col_info = read_info('information.txt')
     #print(midi_col_info)
@@ -390,12 +390,12 @@ def main():
     input_vector = extract_features(input_filename)
     #print("Input vector", input_vector)
 
-    if(use_precomputed != "true"):
-        print("Vectorizing...")
-        midi_vecs = vectorize_collection(True)
-    else:
-        with open('vector_collection.json') as json_f:
-            midi_vecs = json.load(json_f)
+    #if(use_precomputed != "true"):
+    #    print("Vectorizing...")
+    #    midi_vecs = vectorize_collection(True)
+    #else:
+    with open('vector_collection.json') as json_f:
+        midi_vecs = json.load(json_f)
 
     
     #print(midi_vecs)
@@ -407,9 +407,9 @@ def main():
     weight_vector[33] *= 0.8 #I think num instruments is less important, so *0.8
 
     for i in range(34, 51):
-        weight_vector[i] *= 1.5 #multiplier bc instrument type more important
+        weight_vector[i] *= 1.7 #multiplier bc instrument type more important
 
-    weight_vector[56] **= 2 #blow up larger numbers to emphasize rests (empty space); didn't do much, maybe just db size issue?
+    weight_vector[56] **= 1.5 #blow up larger numbers to emphasize rests (empty space); didn't do much, maybe just db size issue?
 
     weight_vector[57] *= 0.75 #times 0.75 because I think length of song is less important
 
@@ -446,7 +446,7 @@ def main():
      
     print(json.dumps(top_k_info)) #the php will take all prints as output, use json to give it dtypes other than string
 
-
+    #to evaluate, use range of top 5 scores...
     #might want to weight instruments higher, maybe?...want to capture space more..weight num rests? like maybe squared to blow up larger numbers
     #weights so far haven't changed anything, db too small? also next, try weight instruments and key higher; prob with Ida Red...really cared about tempo which is good but...
 
