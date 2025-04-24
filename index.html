@@ -27,11 +27,11 @@
     <div id = "query_area" class = "mt-12 p-8 flex items-center justify-center space-y-2 space-x-2">
         <form action="index.php" method="post" enctype="multipart/form-data" class="flex items-center gap-2 mt-4">
             <div class="space-x-2">
-                <label for="midi_file" class="custom-file-upload">
+                <label for="midi_file" class="custom-file-upload" id = "midi_input_label">
                     Upload Midi File
                 </label>
                 <input type="file" id="midi_file" name="query" class = "border border-black" accept="application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi, application/x-midi, audio/midi, audio/x-mid, audio/x-midi, music/crescendo, x-music/x-midi" />
-                <input id = "submit_midi" type="Submit" class = "outline rounded bg-white p-2 mt-24">
+                <input id = "submit_midi" type="Submit" class = "outline rounded bg-white p-2 mt-24 disabled:bg-gray-500 disabled:opacity-50 hover:cursor-pointer" disabled>
             </div>
         </form>
     </div> 

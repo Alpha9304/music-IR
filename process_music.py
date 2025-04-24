@@ -444,7 +444,7 @@ def main():
             correct += 1
         '''
 
-    print("Score: " + str(correct/len(top_k_info)))
+    #print("Score: " + str(correct/len(top_k_info)))
     
     
      
