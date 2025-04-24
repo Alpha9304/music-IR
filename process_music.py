@@ -34,7 +34,7 @@ instrument_categories = {1: ["Acoustic Grand", "Bright Acoustic", "Electric Gran
 }
 
 genre_groupings = [["Pop", "Rock", "Punk", "Lyrical", "Country", "Rap"], ["Movie", "Video Game", "Orchestral/Video Game", "Lyrical"], ["Carol", "Lyrical", "Folk"], 
-                       ["Classical", "Orchstra/Video Game", "Baroque", "Renaissance", "March"], ["Blues", "Jazz", "Orchestral/Video Game"]]
+                       ["Classical", "Orchestral/Video Game", "Baroque", "Renaissance", "March", "Folk"], ["Blues", "Jazz", "Orchestral/Video Game"]]
 
 def compute_instrument_cats(instrument_list):
     categories = []
@@ -419,7 +419,7 @@ def main():
     top_k_info = []
 
     #Evaluation by genre; do not run during real use
-    test_midi = input_filename.split("/")[1]
+    test_midi = input_filename.split("\\")[1]
     test_genre = midi_col_info[test_midi][2]
     test_genre_indices = []
     for i in range(len(genre_groupings)):
@@ -437,7 +437,7 @@ def main():
         #Evaluation
         midi_genres = [i for i in range(len(genre_groupings)) if midi_col_info[midi_file][2] in genre_groupings[i]]
         print(midi_genres)
-        if (len(list(midi_genres & test_genre)) > 0):
+        if (len(list(set(midi_genres) & set(test_genre_indices))) > 0):
             correct += 1
 
     print("Score: " + str(correct/len(top_k_info)))
