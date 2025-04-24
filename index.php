@@ -61,11 +61,11 @@
           throw new RuntimeException('Exceeded filesize limit.');
       }
       
-      //looks like the file download is having issues...
+      
       $uploads_dir = 'user-input/';
       $download_loc = $uploads_dir . basename($_FILES['query']['name']);
     
-
+      
       if (move_uploaded_file($_FILES['query']['tmp_name'], $download_loc)) {
         //echo "File is valid, and was successfully downloaded.\n";
       } else {
@@ -76,8 +76,9 @@
       echo 'Here is some more debugging info:';
       print_r($_FILES);
       */
-
-      $results = json_decode(shell_exec("python process_music.py " .$download_loc), true); //should return an array?
+      $download_loc_escaped = escapeshellarg($download_loc); //handle file names with spaces
+      $results = json_decode(shell_exec("python process_music.py " .$download_loc_escaped = escapeshellarg($download_loc)), true); 
+   
       $col_names = array("Song", "Composer (s)");
       $col_indices = array(0, 1);
       //display the results in a table
