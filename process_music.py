@@ -407,7 +407,10 @@ def main():
     weight_vector[33] *= 0.8 #I think num instruments is less important, so *0.8
 
     for i in range(34, 51):
-        weight_vector[i] *= 1.7 #multiplier bc instrument type more important
+        weight_vector[i] *= 1.9 #multiplier bc instrument type more important
+
+    weight_vector[55] += 1.55 #care about mode velocity more
+   
 
     weight_vector[56] **= 1.5 #blow up larger numbers to emphasize rests (empty space); didn't do much, maybe just db size issue?
 
@@ -418,7 +421,9 @@ def main():
     top_k_similar = compute_most_similar(input_vector, midi_vecs, weight_vector)
     top_k_info = []
 
-    '''
+    #might want to weight velocity more?
+
+    
     #Evaluation by genre; do not run during real use
     test_midi = input_filename.split("\\")[1]
     test_genre = midi_col_info[test_midi][2]
@@ -428,7 +433,7 @@ def main():
             test_genre_indices.append(i)
     print(test_genre_indices)
     correct = 0
-    '''
+    
 
     for i in range(len(top_k_similar)):
         midi_file = top_k_similar[i][0]
@@ -436,15 +441,15 @@ def main():
         composer = midi_col_info[midi_file][1]
         top_k_info.append([song_name, composer])
 
-        '''
+        
         #Evaluation
         midi_genres = [i for i in range(len(genre_groupings)) if midi_col_info[midi_file][2] in genre_groupings[i]]
         print(midi_genres)
         if (len(list(set(midi_genres) & set(test_genre_indices))) > 0):
             correct += 1
-        '''
+        
 
-    #print("Score: " + str(correct/len(top_k_info)))
+    print("Score: " + str(correct/len(top_k_info)))
     
     
      
