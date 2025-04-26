@@ -17,7 +17,7 @@
           </div>
           </div>
     </nav>
-    <h1 class="text-6xl font-bold italic font-mono text-center text-yellow-950 pt-4">
+    <h1 class="text-6xl font-bold italic font-mono text-center text-black pt-4">
         Search Results
     </h1>
   <?php
