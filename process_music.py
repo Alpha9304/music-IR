@@ -62,7 +62,8 @@ def read_info(file):
 
     return collection
 
-def test_out_library(score): #note in midis some of this data may be missing and will default to something; how do we indicate this
+#function used to experiment with the library
+def test_out_library(score): 
 
     parts = score.parts #a part meaning instrument
     print("Initial Key Signatures of Parts:")
@@ -421,9 +422,8 @@ def main():
     top_k_similar = compute_most_similar(input_vector, midi_vecs, weight_vector)
     top_k_info = []
 
-    #might want to weight velocity more?
 
-    
+    '''   
     #Evaluation by genre; do not run during real use
     test_midi = input_filename.split("\\")[1]
     test_genre = midi_col_info[test_midi][2]
@@ -433,7 +433,7 @@ def main():
             test_genre_indices.append(i)
     print(test_genre_indices)
     correct = 0
-    
+    '''
 
     for i in range(len(top_k_similar)):
         midi_file = top_k_similar[i][0]
@@ -441,25 +441,20 @@ def main():
         composer = midi_col_info[midi_file][1]
         top_k_info.append([song_name, composer])
 
-        
+        '''
         #Evaluation
         midi_genres = [i for i in range(len(genre_groupings)) if midi_col_info[midi_file][2] in genre_groupings[i]]
         print(midi_genres)
         if (len(list(set(midi_genres) & set(test_genre_indices))) > 0):
             correct += 1
         
+        
 
     print("Score: " + str(correct/len(top_k_info)))
-    
+    '''
     
      
     print(json.dumps(top_k_info)) #the php will take all prints as output, use json to give it dtypes other than string
 
-    #to evaluate, use range of top 5 scores...
-    #might want to weight instruments higher, maybe?...want to capture space more..weight num rests? like maybe squared to blow up larger numbers
-    #weights so far haven't changed anything, db too small? also next, try weight instruments and key higher; prob with Ida Red...really cared about tempo which is good but...
-
-    #do pre-vectorization next...once the database is bigger/finalized, use it to save time(took like 7 minutes!)...; would need to write line by line the vectors...
-    #also consider tweaking the prepared vectors for testing speed...
 if __name__ == '__main__':
     main()
